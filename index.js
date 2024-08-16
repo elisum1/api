@@ -13,7 +13,7 @@ dotenv.config();
 
 // Configuración de CORS
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:3001'], // Permite ambos orígenes
+    origin: ['http://localhost:3000', 'http://localhost:3001','hotel-admin-five.vercel.app','hotel-client-xi.vercel.app'], // Permite ambos orígenes
     methods: 'GET,POST,PUT,DELETE',
     allowedHeaders: 'Content-Type,Authorization',
     credentials: true
