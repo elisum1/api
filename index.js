@@ -13,10 +13,15 @@ dotenv.config();
 
 // Configuración de CORS
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:3001','https://hotel-admin-five.vercel.app','hotel-client-xi.vercel.app'], // Permite ambos orígenes
+    origin: [
+        'http://localhost:3000', 
+        'http://localhost:3001',
+        'https://hotel-admin-five.vercel.app',
+        'https://hotel-client-xi.vercel.app'
+    ], // Asegúrate de incluir https:// en las URLs desplegadas
     methods: 'GET,POST,PUT,DELETE',
     allowedHeaders: 'Content-Type,Authorization',
-    credentials: true
+    credentials: true // Esto permite que las cookies y las credenciales se envíen en las solicitudes
 }));
 
 const connectDB = async () => {
@@ -58,7 +63,7 @@ app.use((err, req, res, next) => {
     });
 });
 
-app.listen(process.env.PORT || 8800,   () => {
+app.listen(process.env.PORT || 8800, () => {
     connectDB();
     console.log('Connected on port 8800');
 });
