@@ -35,7 +35,7 @@ app.use(cors({
     origin: [
         'http://localhost:3000', 
         'http://localhost:3001',
-        'https://hotel-admin-alg8tut6s-elisum1s-projects.vercel.app',
+        'hotel-admin-cy39desuk-elisum1s-projects.vercel.app',
         'https://hotel-client-xi.vercel.app'
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
