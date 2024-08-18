@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import cors from 'cors';  // Importa el paquete cors
+import cors from 'cors';
 import authRoute from './routes/auth.js';
 import usersRoute from './routes/users.js';
 import roomsRoute from './routes/rooms.js';
@@ -11,6 +11,25 @@ import cookieParser from 'cookie-parser';
 const app = express();
 dotenv.config();
 
+// Conexión a la base de datos
+const connectDB = async () => {
+    try {
+        await mongoose.connect(process.env.MONGO);
+        console.log('Conectado a MongoDB');
+    } catch (error) {
+        console.error('Error conectando a MongoDB:', error);
+        throw error;
+    }
+};
+
+mongoose.connection.on('disconnected', () => {
+    console.log('MongoDB desconectado');
+});
+
+mongoose.connection.on('connected', () => {
+    console.log('MongoDB está conectado');
+});
+
 // Configuración de CORS
 app.use(cors({
     origin: [
@@ -18,29 +37,14 @@ app.use(cors({
         'http://localhost:3001',
         'https://hotel-admin-five.vercel.app',
         'https://hotel-client-xi.vercel.app'
-    ], // Asegúrate de incluir https:// en las URLs desplegadas
-    methods: 'GET,POST,PUT,DELETE',
-    allowedHeaders: 'Content-Type,Authorization',
-    credentials: true // Esto permite que las cookies y las credenciales se envíen en las solicitudes
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 }));
 
-app.options('*', cors())
-const connectDB = async () => {
-    try {
-        await mongoose.connect(process.env.MONGO);
-        console.log('Conectado a MongoDB');
-    } catch (error) {
-        throw error;
-    }
-};
-
-mongoose.connection.on('disconnected', () => {
-    console.log('mongoDB desconectado');
-});
-
-mongoose.connection.on('connected', () => {
-    console.log('mongoDB está conectado');
-});
+// Middleware para manejar pre-flight requests
+app.options('*', cors());
 
 // Middlewares
 app.use(cookieParser());
@@ -64,7 +68,8 @@ app.use((err, req, res, next) => {
     });
 });
 
+// Iniciar el servidor
 app.listen(process.env.PORT || 8800, () => {
     connectDB();
-    console.log('Connected on port 8800');
+    console.log('Servidor corriendo en el puerto', process.env.PORT || 8800);
 });
