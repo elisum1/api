@@ -24,6 +24,7 @@ app.use(cors({
     credentials: true // Esto permite que las cookies y las credenciales se envíen en las solicitudes
 }));
 
+app.options('*', cors())
 const connectDB = async () => {
     try {
         await mongoose.connect(process.env.MONGO);
